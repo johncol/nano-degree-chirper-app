@@ -9,6 +9,7 @@ import {
 import * as Helpers from '../utils/helpers';
 import TweetsSelector from '../state/selectors/tweets';
 import AuthedUserSelector from '../state/selectors/authed-user';
+import { TweetsApiActionCreator } from '../state/actions/tweets';
 
 const Avatar = ({ avatar, name }) => (
   <img src={avatar} alt={'Avatar of ' + name} className="avatar" />
@@ -41,13 +42,13 @@ const LikeButon = ({ hasLiked, handleClick }) => (
 );
 
 class Tweet extends Component {
-  navigateToParentTweet = (event, parentTweet) => {
-    event.preventDefault();
+  navigateToParentTweet = parentTweet => {
     console.log('TODO: navigate to tweet ' + parentTweet.id);
   };
 
   toggleLike = tweetId => {
-    console.log('TODO: toggle like for tweet ' + tweetId);
+    const { authedUser, toggleTweetLike } = this.props;
+    toggleTweetLike(tweetId, authedUser);
   };
 
   render() {
@@ -78,7 +79,7 @@ class Tweet extends Component {
             {parent && (
               <ReplyingToButton
                 parent={parent}
-                handleClick={event => this.navigateToParentTweet(event, parent)}
+                handleClick={() => this.navigateToParentTweet(parent)}
               />
             )}
             <p>{text}</p>
@@ -102,11 +103,15 @@ class Tweet extends Component {
 const stateToProps = (state, props) => {
   return {
     tweet: TweetsSelector.tweet(state, props),
-    autherUser: AuthedUserSelector.authedUser(state)
+    authedUser: AuthedUserSelector.authedUser(state)
   };
 };
 
-const dispatchToProps = dispatch => ({});
+const dispatchToProps = dispatch => ({
+  toggleTweetLike: (tweetId, authedUser) => {
+    dispatch(TweetsApiActionCreator.toggleTweetLike({ tweetId, authedUser }));
+  }
+});
 
 export default connect(
   stateToProps,
