@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import LoadingBar from 'react-redux-loading';
 
 import { SharedActionCreator } from '../state/actions/shared';
 import SharedSelector from '../state/selectors/shared';
@@ -14,7 +15,7 @@ class App extends Component {
     const { loading } = this.props;
     return (
       <div>
-        {loading && <span>Loading...</span>}
+        <LoadingBar />
         {!loading && <Dashboard />}
       </div>
     );

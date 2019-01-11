@@ -1,3 +1,5 @@
+import { showLoading, hideLoading } from 'react-redux-loading';
+
 import * as API from './../../utils/api';
 
 import { UsersActionCreator } from './users';
@@ -12,10 +14,12 @@ export const SharedAction = {
 
 export const SharedActionCreator = {
   saveInitialState: () => dispatch => {
+    dispatch(showLoading());
     return API.getInitialData().then(({ users, tweets, authedUser }) => {
       dispatch(UsersActionCreator.saveInitialUsers(users));
       dispatch(TweetsActionCreator.saveInitialTweets(tweets));
       dispatch(AuthedUserActionCreator.saveAuthedUserId(authedUser));
+      dispatch(hideLoading());
     });
   }
 };
