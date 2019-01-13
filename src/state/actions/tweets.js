@@ -1,11 +1,15 @@
+import { showLoading, hideLoading } from 'react-redux-loading';
+
 import * as API from './../../utils/api';
 
 const SAVE_INITIAL_TWEETS = 'SAVE_INITIAL_TWEETS';
 const TOGGLE_TWEET_LIKE = 'TOGGLE_TWEET_LIKE';
+const SAVE_NEW_TWEET = 'SAVE_NEW_TWEET';
 
 export const TweetsAction = {
   SAVE_INITIAL_TWEETS,
-  TOGGLE_TWEET_LIKE
+  TOGGLE_TWEET_LIKE,
+  SAVE_NEW_TWEET
 };
 
 export const TweetsActionCreator = {
@@ -20,6 +24,11 @@ export const TweetsActionCreator = {
       tweetId,
       authedUser
     }
+  }),
+
+  saveNewTweet: tweet => ({
+    type: TweetsAction.SAVE_NEW_TWEET,
+    payload: tweet
   })
 };
 
@@ -35,6 +44,15 @@ export const TweetsApiActionCreator = {
       dispatch(TweetsActionCreator.toggleTweetLike({ tweetId, authedUser }));
       alert('Could not toggle tweet like state for ' + authedUser);
     });
+  },
+
+  saveNewTweet: ({ text, replyingTo }) => (dispatch, getState) => {
+    const author = getState().authedUser;
+    dispatch(showLoading());
+    return API.saveTweet({ text, author, replyingTo })
+      .then(tweet => dispatch(TweetsActionCreator.saveNewTweet(tweet)))
+      .catch(() => alert('Could not save new tweet for ' + author))
+      .finally(() => dispatch(hideLoading()));
   }
 };
 
