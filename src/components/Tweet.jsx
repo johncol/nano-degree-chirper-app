@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  TiArrowBackOutline,
-  TiHeartOutline,
-  TiHeartFullOutline
-} from 'react-icons/ti';
+import { Link, withRouter } from 'react-router-dom';
+import { TiArrowBackOutline, TiHeartOutline, TiHeartFullOutline } from 'react-icons/ti';
 
 import * as Helpers from '../utils/helpers';
 import TweetsSelector from '../state/selectors/tweets';
@@ -15,9 +12,7 @@ const Avatar = ({ avatar, name }) => (
   <img src={avatar} alt={'Avatar of ' + name} className="avatar" />
 );
 
-const PublicationDate = ({ timestamp }) => (
-  <div>{Helpers.formatDate(timestamp)}</div>
-);
+const PublicationDate = ({ timestamp }) => <div>{Helpers.formatDate(timestamp)}</div>;
 
 const RepliesCount = ({ replies }) => <span>{replies !== 0 && replies}</span>;
 
@@ -42,11 +37,13 @@ const LikeButon = ({ hasLiked, handleClick }) => (
 );
 
 class Tweet extends Component {
-  navigateToParentTweet = parentTweet => {
-    console.log('TODO: navigate to tweet ' + parentTweet.id);
+  navigateToParentTweet = (event, parentTweet) => {
+    event.preventDefault();
+    this.props.history.push('/tweet/' + parentTweet.id);
   };
 
-  toggleLike = tweetId => {
+  toggleLike = (event, tweetId) => {
+    event.preventDefault();
     const { authedUser, toggleTweetLike } = this.props;
     toggleTweetLike(tweetId, authedUser);
   };
@@ -57,20 +54,10 @@ class Tweet extends Component {
       return <div>This tweet does not exist</div>;
     }
 
-    const {
-      name,
-      avatar,
-      timestamp,
-      text,
-      hasLiked,
-      likes,
-      replies,
-      id,
-      parent
-    } = tweet;
+    const { name, avatar, timestamp, text, hasLiked, likes, replies, id, parent } = tweet;
 
     return (
-      <section className="tweet">
+      <Link className="tweet" to={'/tweet/' + id}>
         <Avatar avatar={avatar} name={name} />
         <div className="tweet-info">
           <div>
@@ -79,7 +66,7 @@ class Tweet extends Component {
             {parent && (
               <ReplyingToButton
                 parent={parent}
-                handleClick={() => this.navigateToParentTweet(parent)}
+                handleClick={event => this.navigateToParentTweet(event, parent)}
               />
             )}
             <p>{text}</p>
@@ -90,12 +77,12 @@ class Tweet extends Component {
             <RepliesCount replies={replies} />
             <LikeButon
               hasLiked={hasLiked}
-              handleClick={() => this.toggleLike(id)}
+              handleClick={event => this.toggleLike(event, id)}
             />
             <LikesCount likes={likes} />
           </div>
         </div>
-      </section>
+      </Link>
     );
   }
 }
@@ -113,7 +100,9 @@ const dispatchToProps = dispatch => ({
   }
 });
 
-export default connect(
-  stateToProps,
-  dispatchToProps
-)(Tweet);
+export default withRouter(
+  connect(
+    stateToProps,
+    dispatchToProps
+  )(Tweet)
+);
