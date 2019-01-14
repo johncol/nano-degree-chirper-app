@@ -4,9 +4,14 @@ import { Redirect } from 'react-router-dom';
 
 import { TweetsApiActionCreator } from '../state/actions/tweets';
 
-const CharactersLeft = ({ tweetLeft }) => (
-  <div className="tweet-length">{tweetLeft} characters left</div>
-);
+const TWEET_MAX_LENGTH = 120;
+
+const CharactersLeft = ({ tweetLeft }) => {
+  if (tweetLeft >= 60) {
+    return null;
+  }
+  return <div className="tweet-length">{tweetLeft} characters left</div>;
+};
 
 const TweetInput = ({ text, updateTweetText }) => (
   <textarea
@@ -14,7 +19,7 @@ const TweetInput = ({ text, updateTweetText }) => (
     value={text}
     onChange={updateTweetText}
     className="textarea"
-    maxLength="280"
+    maxLength={TWEET_MAX_LENGTH}
   />
 );
 
@@ -51,14 +56,14 @@ class NewTweet extends Component {
       return <Redirect to="/dashboard" />;
     }
 
-    const tweetLeft = 250 - text.length;
+    const tweetLeft = TWEET_MAX_LENGTH - text.length;
     return (
       <div>
         <h3 className="center">Compose new tweet</h3>
 
         <form className="new-tweet" autoComplete="off" onSubmit={this.createTweet}>
           <TweetInput text={text} updateTweetText={this.updateTweetText} />
-          {tweetLeft < 100 && <CharactersLeft tweetLeft={tweetLeft} />}
+          <CharactersLeft tweetLeft={tweetLeft} />
           <SaveButton text={text} />
         </form>
       </div>
