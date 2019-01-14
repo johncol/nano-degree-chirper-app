@@ -2,7 +2,9 @@ import * as Helpers from '../../utils/helpers';
 
 const TweetsSelector = {
   tweetIds: ({ tweets }) => {
-    return Object.keys(tweets).sort((tweet1, tweet2) => tweet2.timestamp - tweet1.timestamp);
+    return Object.values(tweets)
+      .sort((tweet1, tweet2) => tweet2.timestamp - tweet1.timestamp)
+      .map(tweet => tweet.id);
   },
 
   tweet: ({ users, tweets, authedUser }, { id }) => {
