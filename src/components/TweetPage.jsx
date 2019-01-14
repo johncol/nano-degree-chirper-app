@@ -27,7 +27,7 @@ class TweetPage extends Component {
 }
 
 const stateToProps = (state, props) => ({
-  id: props.id,
+  id: props.match.params.id,
   replyIds: TweetsSelector.replyIds(state, props)
 });
 
