@@ -19,6 +19,10 @@ const RepliesCount = ({ replies }) => <span>{replies !== 0 && replies}</span>;
 const LikesCount = ({ likes }) => <span>{likes !== 0 && likes}</span>;
 
 const ReplyingToButton = ({ parent, handleClick }) => {
+  if (!parent) {
+    return null;
+  }
+
   return (
     <button className="replying-to" onClick={handleClick}>
       Replying to @{parent.author}
@@ -34,6 +38,15 @@ const LikeButon = ({ hasLiked, handleClick }) => (
       <TiHeartOutline className="tweet-icon" />
     )}
   </button>
+);
+
+const Icons = ({ id, replies, likes, hasLiked, toggleLike }) => (
+  <div className="tweet-icons">
+    <TiArrowBackOutline className="tweet-icon" />
+    <RepliesCount replies={replies} />
+    <LikeButon hasLiked={hasLiked} handleClick={event => toggleLike(event, id)} />
+    <LikesCount likes={likes} />
+  </div>
 );
 
 class Tweet extends Component {
@@ -59,29 +72,26 @@ class Tweet extends Component {
     return (
       <Link className="tweet" to={'/tweet/' + id}>
         <Avatar avatar={avatar} name={name} />
-        <div className="tweet-info">
-          <div>
+
+        <section className="tweet-info">
+          <section>
             <span>{name}</span>
             <PublicationDate timestamp={timestamp} />
-            {parent && (
-              <ReplyingToButton
-                parent={parent}
-                handleClick={event => this.navigateToParentTweet(event, parent)}
-              />
-            )}
-            <p>{text}</p>
-          </div>
-
-          <div className="tweet-icons">
-            <TiArrowBackOutline className="tweet-icon" />
-            <RepliesCount replies={replies} />
-            <LikeButon
-              hasLiked={hasLiked}
-              handleClick={event => this.toggleLike(event, id)}
+            <ReplyingToButton
+              parent={parent}
+              handleClick={event => this.navigateToParentTweet(event, parent)}
             />
-            <LikesCount likes={likes} />
-          </div>
-        </div>
+            <p>{text}</p>
+          </section>
+
+          <Icons
+            toggleLike={this.toggleLike}
+            id={id}
+            replies={replies}
+            likes={likes}
+            hasLiked={hasLiked}
+          />
+        </section>
       </Link>
     );
   }
