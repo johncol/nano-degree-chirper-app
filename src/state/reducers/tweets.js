@@ -34,11 +34,12 @@ const tweetsReducer = (state = {}, action) => {
         [tweet.id]: tweet
       };
 
-      if (tweet.replyingTo) {
-        const replyingTo = { tweet };
-        newState[replyingTo.id] = {
-          ...replyingTo,
-          replies: [...replyingTo.replies, tweet.id]
+      const replyingToTweetId = tweet.replyingTo;
+      if (replyingToTweetId != null) {
+        const replyingToTweet = state[replyingToTweetId];
+        newState[replyingToTweetId] = {
+          ...replyingToTweet,
+          replies: [...replyingToTweet.replies, tweet.id]
         };
       }
 
