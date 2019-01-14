@@ -56,7 +56,9 @@ class NewTweet extends Component {
   }
 }
 
-const stateToProps = state => ({});
+const stateToProps = (state, props) => ({
+  replyingTo: props.replyingTo
+});
 
 const dispatchToProps = dispatch => ({
   saveNewTweet: (text, replyingTo) => {
