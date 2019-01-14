@@ -13,7 +13,8 @@ const TweetsSelector = {
     return Helpers.formatTweet(tweet, author, authedUser, parentTweet);
   },
 
-  replyIds: ({ tweets }, { id }) => {
+  replyIds: ({ tweets }, props) => {
+    const { id } = props.match.params;
     const tweet = tweets[id];
     if (!tweet) {
       return [];
