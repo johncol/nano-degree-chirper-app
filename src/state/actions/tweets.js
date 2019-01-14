@@ -38,7 +38,7 @@ export const TweetsApiActionCreator = {
     const tweet = getState().tweets[tweetId];
     return API.saveLikeToggle({
       id: tweetId,
-      hasLiked: !tweetHasUserInLikesList(tweet),
+      hasLiked: !tweetHasUserInLikesList(tweet, authedUser),
       authedUser
     }).catch(() => {
       dispatch(TweetsActionCreator.toggleTweetLike(tweetId, authedUser));
