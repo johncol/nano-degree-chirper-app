@@ -6,6 +6,7 @@ import { SharedActionCreator } from '../state/actions/shared';
 import SharedSelector from '../state/selectors/shared';
 import Dashboard from './Dashboard';
 import NewTweet from './NewTweet';
+import TweetPage from './TweetPage';
 
 class App extends Component {
   componentDidMount() {
@@ -17,8 +18,7 @@ class App extends Component {
     return (
       <div>
         <LoadingBar />
-        {!loading && <NewTweet />}
-        {!loading && <Dashboard />}
+        {!loading && <TweetPage tweetId="leqp4lzfox7cqvsgdj0e7" />}
       </div>
     );
   }
