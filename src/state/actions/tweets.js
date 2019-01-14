@@ -18,7 +18,7 @@ export const TweetsActionCreator = {
     payload: tweets
   }),
 
-  toggleTweetLike: ({ tweetId, authedUser }) => ({
+  toggleTweetLike: (tweetId, authedUser) => ({
     type: TweetsAction.TOGGLE_TWEET_LIKE,
     payload: {
       tweetId,
@@ -33,20 +33,20 @@ export const TweetsActionCreator = {
 };
 
 export const TweetsApiActionCreator = {
-  toggleTweetLike: ({ tweetId, authedUser }) => (dispatch, getState) => {
-    dispatch(TweetsActionCreator.toggleTweetLike({ tweetId, authedUser }));
+  toggleTweetLike: (tweetId, authedUser) => (dispatch, getState) => {
+    dispatch(TweetsActionCreator.toggleTweetLike(tweetId, authedUser));
     const tweet = getState().tweets[tweetId];
     return API.saveLikeToggle({
       id: tweetId,
       hasLiked: !tweetHasUserInLikesList(tweet),
       authedUser
     }).catch(() => {
-      dispatch(TweetsActionCreator.toggleTweetLike({ tweetId, authedUser }));
+      dispatch(TweetsActionCreator.toggleTweetLike(tweetId, authedUser));
       alert('Could not toggle tweet like state for ' + authedUser);
     });
   },
 
-  saveNewTweet: ({ text, replyingTo }) => (dispatch, getState) => {
+  saveNewTweet: (text, replyingTo) => (dispatch, getState) => {
     const author = getState().authedUser;
     dispatch(showLoading());
     return API.saveTweet({ text, author, replyingTo })

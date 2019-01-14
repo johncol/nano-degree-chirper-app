@@ -106,7 +106,7 @@ const stateToProps = (state, props) => {
 
 const dispatchToProps = dispatch => ({
   toggleTweetLike: (tweetId, authedUser) => {
-    dispatch(TweetsApiActionCreator.toggleTweetLike({ tweetId, authedUser }));
+    dispatch(TweetsApiActionCreator.toggleTweetLike(tweetId, authedUser));
   }
 });
 

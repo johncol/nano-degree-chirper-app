@@ -77,7 +77,7 @@ const stateToProps = (state, props) => ({
 
 const dispatchToProps = dispatch => ({
   saveNewTweet: (text, replyingTo) => {
-    dispatch(TweetsApiActionCreator.saveNewTweet({ text, replyingTo }));
+    dispatch(TweetsApiActionCreator.saveNewTweet(text, replyingTo));
   }
 });
 
