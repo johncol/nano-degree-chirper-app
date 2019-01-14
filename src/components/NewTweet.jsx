@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { TweetsApiActionCreator } from '../state/actions/tweets';
 
@@ -25,7 +26,8 @@ const SaveButton = ({ text }) => (
 
 class NewTweet extends Component {
   state = {
-    text: ''
+    text: '',
+    redirectToHome: false
   };
 
   updateTweetText = event => {
@@ -36,11 +38,19 @@ class NewTweet extends Component {
   createTweet = event => {
     event.preventDefault();
     this.props.saveNewTweet(this.state.text.trim(), this.props.replyingTo);
-    this.setState({ text: '' });
+    this.setState({
+      text: '',
+      redirectToHome: this.props.replyingTo ? false : true
+    });
   };
 
   render() {
-    const { text } = this.state;
+    const { text, redirectToHome } = this.state;
+
+    if (redirectToHome) {
+      return <Redirect to="/dashboard" />;
+    }
+
     const tweetLeft = 250 - text.length;
     return (
       <div>
