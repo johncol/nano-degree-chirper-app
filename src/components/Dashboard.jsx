@@ -13,7 +13,7 @@ class Dashboard extends Component {
         <ul className="dashboard-list">
           {tweetIds.map(tweetId => (
             <li key={tweetId}>
-              <Tweet tweetId={tweetId} />
+              <Tweet id={tweetId} />
             </li>
           ))}
         </ul>

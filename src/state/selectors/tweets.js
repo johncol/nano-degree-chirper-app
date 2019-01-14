@@ -5,16 +5,16 @@ const TweetsSelector = {
     return Object.keys(tweets).sort((tweet1, tweet2) => tweet2.timestamp - tweet1.timestamp);
   },
 
-  tweet: ({ users, tweets, authedUser }, { tweetId }) => {
-    const tweet = tweets[tweetId];
+  tweet: ({ users, tweets, authedUser }, { id }) => {
+    const tweet = tweets[id];
     if (!tweet) return null;
     const author = users[tweet.author];
     const parentTweet = tweets[tweet.replyingTo];
     return Helpers.formatTweet(tweet, author, authedUser, parentTweet);
   },
 
-  replyIds: ({ tweets }, { tweetId }) => {
-    const tweet = tweets[tweetId];
+  replyIds: ({ tweets }, { id }) => {
+    const tweet = tweets[id];
     if (!tweet) {
       return [];
     }

@@ -7,17 +7,17 @@ import TweetsSelector from '../state/selectors/tweets';
 
 class TweetPage extends Component {
   render() {
-    const { tweet, replyIds } = this.props;
+    const { id, replyIds } = this.props;
     return (
       <div>
-        <Tweet tweetId={tweet.id} />
-        <NewTweet replyingTo={tweet.id} />
+        <Tweet id={id} />
+        <NewTweet replyingTo={id} />
 
         {replyIds.length > 0 && (
           <div>
             <h3 className="center">Replies</h3>
             {replyIds.map(replyId => (
-              <Tweet key={replyId} tweetId={replyId} />
+              <Tweet key={replyId} id={replyId} />
             ))}
           </div>
         )}
@@ -27,7 +27,7 @@ class TweetPage extends Component {
 }
 
 const stateToProps = (state, props) => ({
-  tweet: TweetsSelector.tweet(state, props),
+  id: props.id,
   replyIds: TweetsSelector.replyIds(state, props)
 });
 

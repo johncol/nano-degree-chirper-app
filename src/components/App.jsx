@@ -18,7 +18,7 @@ class App extends Component {
     return (
       <div>
         <LoadingBar />
-        {!loading && <TweetPage tweetId="leqp4lzfox7cqvsgdj0e7" />}
+        {!loading && <TweetPage id="leqp4lzfox7cqvsgdj0e7" />}
       </div>
     );
   }
