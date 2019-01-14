@@ -9,7 +9,7 @@ const CharactersLeft = ({ tweetLeft }) => (
 
 const TweetInput = ({ text, updateTweetText }) => (
   <textarea
-    placeholder="What is happening yoday?"
+    placeholder="What is happening today?"
     value={text}
     onChange={updateTweetText}
     className="textarea"
@@ -29,13 +29,13 @@ class NewTweet extends Component {
   };
 
   updateTweetText = event => {
-    const text = event.target.value.trim();
+    const text = event.target.value;
     this.setState({ text });
   };
 
   createTweet = event => {
     event.preventDefault();
-    this.props.saveNewTweet(this.state.text, this.props.replyingTo);
+    this.props.saveNewTweet(this.state.text.trim(), this.props.replyingTo);
     this.setState({ text: '' });
   };
 
